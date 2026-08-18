@@ -215,14 +215,17 @@
   .resizer{
     flex:0 0 auto;
     width:0;
+    min-width:0;
     height:100vh;
     position:relative;
+    overflow:hidden;
+    pointer-events:none;
     cursor:col-resize;
     touch-action:none;
     transition:width .38s cubic-bezier(.22,.9,.3,1);
     z-index:5;
   }
-  .resizer.open{width:16px;}
+  .resizer.open{width:16px; pointer-events:auto;}
   .resizer .resizer-line{
     position:absolute;
     top:0; bottom:0; left:50%;
@@ -235,17 +238,17 @@
     position:absolute;
     top:50%; left:50%;
     transform:translate(-50%,-50%);
-    width:5px;
-    height:52px;
+    width:6px;
+    height:30px;
     border-radius:999px;
-    background:#cfcfcf;
+    background:#2e2d2d;
     border:2px solid var(--line);
     transition:background .2s ease, height .2s ease;
   }
   .resizer:hover .resizer-line,
   .resizer.dragging .resizer-line{background:var(--blue);}
   .resizer:hover .resizer-grip,
-  .resizer.dragging .resizer-grip{background:var(--blue); height:64px;}
+  .resizer.dragging .resizer-grip{background:var(--blue);}
   .resizer.dragging{transition:none;}
   .resizer.dragging + .sidebar,
   .page.no-transition .sidebar{transition:none;}
@@ -490,11 +493,29 @@ setTimeout(drawConnectors, 60);
 
 /* ===== Sidebar logic (push layout, no overlay) ===== */
 const sidebar = document.getElementById('sidebar');
+const resizer = document.getElementById('resizer');
+const pageEl = document.querySelector('.page');
 const sbTitle = document.getElementById('sbTitle');
 const sbKicker = document.getElementById('sbKicker');
 const sbStatus = document.getElementById('sbStatus');
 const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
+
+const MIN_SIDEBAR = 300;   // کمترین عرض ممکن برای سایدبار (px)
+const MIN_MAIN = 320;      // کمترین فضایی که باید برای رودمپ بمونه (px)
+let sidebarWidthPx = null; // اندازهٔ فعلی سایدبار؛ null یعنی هنوز تنظیم نشده (اولین بازشدن پیش‌فرض ۵۰٪ می‌گیره)
+let isDragging = false;
+
+function isMobile(){ return window.innerWidth <= 640; }
+
+// عرض سایدبار رو با توجه به حداقل/حداکثر مجاز محدود می‌کنه و اعمالش می‌کنه
+function applySidebarWidth(px){
+  const pageWidth = pageEl.getBoundingClientRect().width;
+  const max = pageWidth - MIN_MAIN;
+  const clamped = Math.max(MIN_SIDEBAR, Math.min(px, max));
+  sidebarWidthPx = clamped;
+  sidebar.style.width = clamped + 'px';
+}
 
 // چون سایدبار عرض محتوای اصلی رو تغییر می‌ده، بعد از پایان انیمیشن
 // باید موقعیت خط‌های اتصال دوباره محاسبه بشه
@@ -516,13 +537,72 @@ function openProject(i){
     hub.classList.toggle('done', Number(hub.dataset.hub) < i);
   });
 
+  if(isMobile()){
+    sidebar.style.width = '100%';
+  } else {
+    // بار اول که سایدبار باز می‌شه، پیش‌فرض نصف صفحه؛ دفعات بعد همون
+    // اندازه‌ای که کاربر با کشیدن دستگیره انتخاب کرده حفظ می‌شه
+    const defaultWidth = sidebarWidthPx ?? pageEl.getBoundingClientRect().width * 0.5;
+    applySidebarWidth(defaultWidth);
+    resizer.classList.add('open');
+  }
+
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
 }
 function closeSidebar(){
   sidebar.classList.remove('open');
+  resizer.classList.remove('open');
+  sidebar.style.width = '0px';
   sidebar.setAttribute('aria-hidden', 'true');
 }
+
+/* ===== کشیدن دستگیره برای تغییر اندازهٔ دو سکشن ===== */
+function startDrag(clientX){
+  if(isMobile() || !sidebar.classList.contains('open')) return;
+  isDragging = true;
+  resizer.classList.add('dragging');
+  pageEl.classList.add('no-transition');
+  document.body.style.userSelect = 'none';
+  document.body.style.cursor = 'col-resize';
+}
+function duringDrag(clientX){
+  if(!isDragging) return;
+  const pageRect = pageEl.getBoundingClientRect();
+  // چون صفحه RTL هست، سایدبار سمت چپِ .page قرار داره؛ پس عرض سایدبار
+  // برابره با فاصلهٔ ماوس تا لبهٔ چپِ .page
+  const newWidth = clientX - pageRect.left;
+  applySidebarWidth(newWidth);
+  drawConnectors();
+}
+function endDrag(){
+  if(!isDragging) return;
+  isDragging = false;
+  resizer.classList.remove('dragging');
+  pageEl.classList.remove('no-transition');
+  document.body.style.userSelect = '';
+  document.body.style.cursor = '';
+  drawConnectors();
+}
+
+resizer.addEventListener('mousedown', (e) => { startDrag(e.clientX); e.preventDefault(); });
+window.addEventListener('mousemove', (e) => duringDrag(e.clientX));
+window.addEventListener('mouseup', endDrag);
+
+resizer.addEventListener('touchstart', (e) => { startDrag(e.touches[0].clientX); }, { passive:true });
+window.addEventListener('touchmove', (e) => {
+  if(!isDragging) return;
+  duringDrag(e.touches[0].clientX);
+  e.preventDefault();
+}, { passive:false });
+window.addEventListener('touchend', endDrag);
+
+// اگه پنجره بزرگ/کوچیک بشه و سایدبار بازه، دوباره داخل محدودهٔ مجاز جاش بده
+window.addEventListener('resize', () => {
+  if(sidebar.classList.contains('open') && !isMobile() && sidebarWidthPx){
+    applySidebarWidth(sidebarWidthPx);
+  }
+});
 
 document.addEventListener('click', (e) => {
   const trigger = e.target.closest('[data-index]');
@@ -530,6 +610,7 @@ document.addEventListener('click', (e) => {
 });
 document.getElementById('sbClose').addEventListener('click', closeSidebar);
 document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeSidebar(); });
+
 </script>
 </body>
 </html>
