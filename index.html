@@ -102,6 +102,8 @@
     fill:none;
     stroke:var(--blue);
     stroke-width:3;
+    stroke-linecap:square;
+    stroke-linejoin:miter;
   }
   .tag-connector{
     fill:none;
@@ -280,11 +282,12 @@
     font-weight:800;
     line-height:1.4;
   }
+  .sidebar-header .kicker{margin:8px 0 0;}
   .sidebar-close{
     all:unset;
     cursor:pointer;
     width:32px; height:32px;
-    border-radius:8px;
+    border-radius:18px;
     display:flex; align-items:center; justify-content:center;
     color:#666;
     flex:0 0 auto;
@@ -298,6 +301,8 @@
     line-height:1.95;
     font-size:15px;
     flex:1 1 auto;
+    display:flex;
+    flex-direction:column;
   }
   .status-pill{
     display:inline-block;
@@ -310,11 +315,35 @@
     margin-bottom:18px;
   }
   .sidebar-body p{margin:0 0 16px;}
-  .sidebar-body .tags{
+  .tools-section{
     display:flex; flex-wrap:wrap; gap:8px;
-    margin-top:22px; padding-top:18px;
+    padding-bottom:20px;
+  }
+  .section-title{
+    width:100%;
+    margin:0 0 4px;
+    font-size:14px;
+    font-weight:800;
+  }
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .details-section{
+    padding-top:20px;
     border-top:2px solid #f0f0f0;
   }
+  .project-link{
+    display:inline-block;
+    margin-top:2px;
+    color:var(--blue);
+    font-size:13px;
+    font-weight:700;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .project-link[hidden]{display:none;}
   .tag-chip{
     font-size:12px;
     font-weight:600;
@@ -325,7 +354,7 @@
     color:#2a2004;
   }
   .project-gallery{
-    margin-top:28px;
+    margin-top:auto;
     padding-top:20px;
     border-top:2px solid #f0f0f0;
   }
@@ -340,10 +369,12 @@
     grid-template-columns:repeat(2, minmax(0, 1fr));
     gap:10px;
   }
+  .gallery-grid.images-3{grid-template-columns:repeat(3, minmax(0, 1fr));}
+  .gallery-grid.images-4{grid-template-columns:repeat(2, minmax(0, 1fr));}
   .gallery-thumb{
     all:unset;
     display:block;
-    cursor:zoom-in;
+    cursor:pointer;
     aspect-ratio:4 / 3;
     overflow:hidden;
     border:2px solid var(--line);
@@ -430,17 +461,23 @@
     <div class="sidebar-inner">
       <div class="sidebar-header">
         <div class="meta">
-          <span class="kicker" id="sbKicker">پروژه</span>
           <h2 id="sbTitle">—</h2>
+          <span class="kicker" id="sbKicker">پروژه</span>
         </div>
         <button class="sidebar-close" id="sbClose" aria-label="بستن">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="sidebar-body">
-        <span class="status-pill" id="sbStatus">در حال ساخت</span>
-        <div id="sbDescription"></div>
-        <div class="tags" id="sbTags"></div>
+        <section class="tools-section" id="sbToolsSection" hidden>
+          <h3 class="section-title">ابزارها</h3>
+          <div class="tags" id="sbTags"></div>
+        </section>
+        <section class="details-section">
+          <span class="status-pill" id="sbStatus">در حال ساخت</span>
+          <div id="sbDescription"></div>
+          <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden>مشاهده پروژه</a>
+        </section>
         <section class="project-gallery" id="sbGallery" hidden>
           <h3 class="gallery-title">تصاویر پروژه</h3>
           <div class="gallery-grid" id="sbGalleryGrid"></div>
@@ -528,9 +565,7 @@ function drawConnectors(){
     for(let i=0; i<pts.length-1; i++){
       const a = pts[i], b = pts[i+1];
       const midY = (a.y + b.y) / 2;
-      const cx1 = a.x + (b.x - a.x) * 0.15;
-      const cx2 = b.x - (b.x - a.x) * 0.15;
-      d += ` C ${cx1} ${midY}, ${cx2} ${midY}, ${b.x} ${b.y}`;
+      d += ` L ${a.x} ${midY} L ${b.x} ${midY} L ${b.x} ${b.y}`;
     }
     mainPath.setAttribute('d', d);
   }
@@ -569,6 +604,8 @@ const sbKicker = document.getElementById('sbKicker');
 const sbStatus = document.getElementById('sbStatus');
 const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
+const sbToolsSection = document.getElementById('sbToolsSection');
+const sbLink = document.getElementById('sbLink');
 const sbGallery = document.getElementById('sbGallery');
 const sbGalleryGrid = document.getElementById('sbGalleryGrid');
 const lightbox = document.getElementById('lightbox');
@@ -602,7 +639,11 @@ function openProject(i){
   sbStatus.textContent = p.status;
   sbDescription.innerHTML = p.description.split('\n').map(line => `<p>${line}</p>`).join('');
   sbTags.innerHTML = (p.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join('');
+  sbToolsSection.hidden = !(p.tags && p.tags.length);
+  sbLink.hidden = !p.link;
+  sbLink.href = p.link || '#';
   const images = (p.images || []).slice(0, 4);
+  sbGalleryGrid.className = `gallery-grid images-${images.length}`;
   sbGalleryGrid.innerHTML = images.map((src, imageIndex) => `
     <button class="gallery-thumb" type="button" data-gallery-index="${imageIndex}" aria-label="نمایش تصویر ${imageIndex + 1}">
       <img src="${src}" alt="${p.title} - تصویر ${imageIndex + 1}" loading="lazy">
