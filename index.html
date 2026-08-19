@@ -259,13 +259,19 @@
     font-weight:800;
     line-height:1.4;
   }
-  .title-status-row{
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .header-details{
+    margin-top:8px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:14px;
+    gap:16px;
   }
-  .sidebar-header .status-pill{margin:0; flex:0 0 auto;}
+  .header-details .status-pill{margin:0; flex:0 0 auto;}
   .sidebar-close{
     all:unset;
     cursor:pointer;
@@ -300,31 +306,49 @@
   }
   .sidebar-body p{margin:0 0 16px;}
   .tools-section{
-    display:flex; flex-wrap:wrap; gap:8px;
-    margin-top:20px;
-    padding-top:40px;
-    padding-bottom:20px;
-    justify-content:end;
-    padding-left:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0;
+    padding:0;
+    justify-content:flex-start;
+  }
+  .tools-section[hidden]{display:none;}
+  .header-details .tools-section:not([hidden]){
+    flex:1 1 auto;
+  }
+  .header-details .tags{
+    justify-content:flex-start;
   }
   .tags{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    
   }
   .details-section{
     padding-top:0;
   }
   .project-link{
-    display:inline-block;
-    margin-top:2px;
-    color:var(--blue);
+    display:block;
+    width:60%;
+    margin-top:8px;
+    padding:12px 14px;
+    overflow:hidden;
+    border-radius:4px;
+    background:#1f2937;
+    color:#fff;
+    /* direction:ltr; */
+    font-family:monospace;
     font-size:13px;
-    font-weight:700;
-    text-decoration:underline;
-    text-underline-offset:3px;
+    line-height:1.5;
+    text-align:left;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-decoration:none;
+    transition:background .2s ease;
   }
+  .project-link:hover{background:#111827;}
+  .project-link:focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
   .project-link[hidden]{display:none;}
   .tag-chip{
     font-size:12px;
@@ -442,22 +466,24 @@
     <div class="sidebar-inner">
       <div class="sidebar-header">
         <div class="meta">
-          <div class="title-status-row">
-            <h2 id="sbTitle">—</h2>
+          <h2 id="sbTitle">—</h2>
+          <div class="header-details">
             <span class="status-pill" id="sbStatus"></span>
+            <section class="tools-section" id="sbToolsSection" hidden>
+              <div class="tags" id="sbTags"></div>
+            </section>
           </div>
         </div>
-        <button class="sidebar-close" id="sbClose" aria-label="بستن">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
+        <div class="header-actions">
+          <button class="sidebar-close" id="sbClose" aria-label="بستن">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
       </div>
       <div class="sidebar-body">
         <section class="details-section">
           <div id="sbDescription"></div>
-          <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden>مشاهده پروژه</a>
-          <div class="tools-section" id="sbToolsSection" hidden>
-            <div class="tags" id="sbTags"></div>
-          </div>
+          <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden></a>
         </section>
         <section class="project-gallery" id="sbGallery" hidden>
           <h3 class="gallery-title">تصاویر پروژه</h3>
@@ -492,6 +518,7 @@ const projects = [
         "public/images/2.jpg",
         "public/images/3.jpg",
     ],
+    link: "https://example.com/project2"
   },
   {
     title: "نام پروژهٔ سوم",
@@ -611,6 +638,7 @@ function openProject(i){
   sbToolsSection.hidden = !(p.tags && p.tags.length);
   sbLink.hidden = !p.link;
   sbLink.href = p.link || '#';
+  sbLink.textContent = p.link || '';
   const images = (p.images || []).slice(0, 4);
   sbGalleryGrid.className = `gallery-grid images-${images.length}`;
   sbGalleryGrid.innerHTML = images.map((src, imageIndex) => `
