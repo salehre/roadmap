@@ -217,16 +217,15 @@
     top:50%; left:50%;
     transform:translate(-50%,-50%);
     width:6px;
-    height:30px;
-    border-radius:4px;
-    background:#2e2d2d;
+    height:36px;
+    border-radius:3px;
+    background:#adabab;
     border:2px solid var(--line);
     transition:background .2s ease, height .2s ease;
   }
-  .resizer:hover .resizer-line,
-  .resizer.dragging .resizer-line{background:var(--blue);}
+
   .resizer:hover .resizer-grip,
-  .resizer.dragging .resizer-grip{background:var(--blue);}
+  .resizer.dragging .resizer-grip{background:#2e2d2d;}
   .resizer.dragging{transition:none;}
   .resizer.dragging + .sidebar,
   .page.no-transition .sidebar{transition:none;}
@@ -399,8 +398,8 @@
   .lightbox-close{
     all:unset;
     position:absolute;
-    top:16px;
-    left:20px;
+    top:17px;
+    left:19px;
     width:38px;
     height:38px;
     display:flex;
@@ -410,7 +409,7 @@
     color:#fff;
     border:2px solid #fff;
     border-radius:50%;
-    font-size:36px;
+    font-size:32px;
     line-height:1;
   }
   .lightbox-close:hover{background:#fff; color:var(--ink);}
@@ -425,7 +424,7 @@
       <div class="hero">
         <div class="eyebrow">نقشهٔ راه</div>
         <h1>رودمپ پروژه‌ها</h1>
-        <p>مسیری از پروژه‌هایی که ساخته شده یا در حال ساخت هستند. روی هر جعبهٔ زرد کلیک کن تا جزئیاتش باز شود.</p>
+        <p>مسیری از پروژه‌هایی که ساخته شده یا در حال ساخت هستند.</p>
       </div>
 
       <div class="roadmap" id="roadmap">
@@ -459,7 +458,7 @@
           <div class="tags" id="sbTags"></div>
         </section>
         <section class="details-section">
-          <span class="status-pill" id="sbStatus">در حال ساخت</span>
+          <span class="status-pill" id="sbStatus"></span>
           <div id="sbDescription"></div>
           <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden>مشاهده پروژه</a>
         </section>
