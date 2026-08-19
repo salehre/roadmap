@@ -259,7 +259,13 @@
     font-weight:800;
     line-height:1.4;
   }
-  .sidebar-header .status-pill{margin:8px 0 0;}
+  .title-status-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .sidebar-header .status-pill{margin:0; flex:0 0 auto;}
   .sidebar-close{
     all:unset;
     cursor:pointer;
@@ -290,24 +296,22 @@
     background:var(--yellow);
     border:2px solid var(--line);
     margin-bottom:18px;
+    justify-content:space-between;
   }
   .sidebar-body p{margin:0 0 16px;}
   .tools-section{
     display:flex; flex-wrap:wrap; gap:8px;
     margin-top:20px;
-    padding-top:20px;
+    padding-top:40px;
     padding-bottom:20px;
-  }
-  .section-title{
-    width:100%;
-    margin:0 0 4px;
-    font-size:14px;
-    font-weight:800;
+    justify-content:end;
+    padding-left:8px;
   }
   .tags{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
+    
   }
   .details-section{
     padding-top:0;
@@ -438,8 +442,10 @@
     <div class="sidebar-inner">
       <div class="sidebar-header">
         <div class="meta">
-          <h2 id="sbTitle">—</h2>
-          <span class="status-pill" id="sbStatus"></span>
+          <div class="title-status-row">
+            <h2 id="sbTitle">—</h2>
+            <span class="status-pill" id="sbStatus"></span>
+          </div>
         </div>
         <button class="sidebar-close" id="sbClose" aria-label="بستن">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -450,7 +456,6 @@
           <div id="sbDescription"></div>
           <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden>مشاهده پروژه</a>
           <div class="tools-section" id="sbToolsSection" hidden>
-            <h3 class="section-title">ابزارها</h3>
             <div class="tags" id="sbTags"></div>
           </div>
         </section>
@@ -480,7 +485,7 @@ const projects = [
   {
     title: "نام پروژهٔ دوم",
     status: "در حال ساخت",
-    description: "توضیح این پروژه رو اینجا بنویس.",
+    description: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
     tags: ["HTML", "CSS", "JavaScript"],
     images: [
         "public/images/1.jpg",
