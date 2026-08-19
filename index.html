@@ -324,6 +324,80 @@
     border:2px solid var(--line);
     color:#2a2004;
   }
+  .project-gallery{
+    margin-top:28px;
+    padding-top:20px;
+    border-top:2px solid #f0f0f0;
+  }
+  .project-gallery[hidden]{display:none;}
+  .gallery-title{
+    margin:0 0 12px;
+    font-size:14px;
+    font-weight:800;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  .gallery-thumb{
+    all:unset;
+    display:block;
+    cursor:zoom-in;
+    aspect-ratio:4 / 3;
+    overflow:hidden;
+    border:2px solid var(--line);
+    border-radius:var(--radius);
+    background:#f0f0f0;
+  }
+  .gallery-thumb:hover img{transform:scale(1.05);}
+  .gallery-thumb:focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
+  .gallery-thumb img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .2s ease;
+  }
+  .lightbox[hidden]{display:none;}
+  .lightbox{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    background:rgba(20,20,20,.84);
+  }
+  .lightbox-image{
+    display:block;
+    max-width:min(100%, 980px);
+    max-height:calc(100vh - 56px);
+    object-fit:contain;
+    border:3px solid #fff;
+    border-radius:var(--radius);
+    background:#fff;
+  }
+  .lightbox-close{
+    all:unset;
+    position:absolute;
+    top:18px;
+    left:22px;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#fff;
+    border:2px solid #fff;
+    border-radius:50%;
+    font-size:26px;
+    line-height:1;
+  }
+  .lightbox-close:hover{background:#fff; color:var(--ink);}
+  .lightbox-close:focus-visible{outline:2px solid var(--yellow); outline-offset:3px;}
 </style>
 </head>
 <body>
@@ -367,9 +441,18 @@
         <span class="status-pill" id="sbStatus">در حال ساخت</span>
         <div id="sbDescription"></div>
         <div class="tags" id="sbTags"></div>
+        <section class="project-gallery" id="sbGallery" hidden>
+          <h3 class="gallery-title">تصاویر پروژه</h3>
+          <div class="gallery-grid" id="sbGalleryGrid"></div>
+        </section>
       </div>
     </div>
   </aside>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="نمایش تصویر" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="بستن تصویر">&times;</button>
+  <img class="lightbox-image" id="lightboxImage" alt="">
 </div>
 
 <script>
@@ -379,21 +462,29 @@ const projects = [
     title: "نام پروژهٔ اول",
     status: "تکمیل‌شده",
     description: "یک یا دو پاراگراف دربارهٔ این پروژه بنویس؛ چه مشکلی رو حل می‌کنه و چه تکنولوژی‌هایی توش استفاده شده.",
+    images: [],
   },
   {
     title: "نام پروژهٔ دوم",
     status: "در حال ساخت",
     description: "توضیح این پروژه رو اینجا بنویس.",
+    images: [
+        "public/images/1.jpg",
+        "public/images/2.jpg",
+        "public/images/3.jpg",
+    ],
   },
   {
     title: "نام پروژهٔ سوم",
     status: "برنامه‌ریزی‌شده",
     description: "توضیح این پروژه رو اینجا بنویس.",
+    images: [],
   },
   {
     title: "نام پروژهٔ چهارم",
     status: "تکمیل‌شده",
     description: "توضیح این پروژه رو اینجا بنویس.",
+    images: [],
   }
 ];
 
@@ -415,7 +506,6 @@ projects.forEach((p, i) => {
     <div class="stack">
       ${tagsHtml}
       <div>
-        <div class="step-label">مرحلهٔ ${num}</div>
         <button class="hub-btn" data-index="${i}">
           <div class="box hub-box" data-hub="${i}">${p.title}</div>
         </button>
@@ -479,6 +569,11 @@ const sbKicker = document.getElementById('sbKicker');
 const sbStatus = document.getElementById('sbStatus');
 const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
+const sbGallery = document.getElementById('sbGallery');
+const sbGalleryGrid = document.getElementById('sbGalleryGrid');
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxClose = document.getElementById('lightboxClose');
 
 const MIN_SIDEBAR = 300;
 const MIN_MAIN = 320;
@@ -507,6 +602,13 @@ function openProject(i){
   sbStatus.textContent = p.status;
   sbDescription.innerHTML = p.description.split('\n').map(line => `<p>${line}</p>`).join('');
   sbTags.innerHTML = (p.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join('');
+  const images = (p.images || []).slice(0, 4);
+  sbGalleryGrid.innerHTML = images.map((src, imageIndex) => `
+    <button class="gallery-thumb" type="button" data-gallery-index="${imageIndex}" aria-label="نمایش تصویر ${imageIndex + 1}">
+      <img src="${src}" alt="${p.title} - تصویر ${imageIndex + 1}" loading="lazy">
+    </button>
+  `).join('');
+  sbGallery.hidden = images.length === 0;
 
   document.querySelectorAll('[data-hub]').forEach(hub => {
     hub.classList.toggle('done', Number(hub.dataset.hub) < i);
@@ -522,6 +624,16 @@ function openProject(i){
 
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
+}
+function openLightbox(src, alt){
+  lightboxImage.src = src;
+  lightboxImage.alt = alt;
+  lightbox.hidden = false;
+  lightboxClose.focus();
+}
+function closeLightbox(){
+  lightbox.hidden = true;
+  lightboxImage.src = '';
 }
 function closeSidebar(){
   sidebar.classList.remove('open');
@@ -574,11 +686,23 @@ window.addEventListener('resize', () => {
 });
 
 document.addEventListener('click', (e) => {
+  const galleryTrigger = e.target.closest('[data-gallery-index]');
+  if(galleryTrigger){
+    const image = galleryTrigger.querySelector('img');
+    openLightbox(image.src, image.alt);
+    return;
+  }
   const trigger = e.target.closest('[data-index]');
   if(trigger){ openProject(Number(trigger.dataset.index)); }
 });
 document.getElementById('sbClose').addEventListener('click', closeSidebar);
-document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeSidebar(); });
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if(e.key !== 'Escape') return;
+  if(!lightbox.hidden){ closeLightbox(); }
+  else { closeSidebar(); }
+});
 
 </script>
 </body>
