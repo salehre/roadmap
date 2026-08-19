@@ -26,7 +26,6 @@
     overflow:hidden;
   }
 
-  /* ===== Page layout: main content + push sidebar ===== */
   .page{
     display:flex;
     height:100vh;
@@ -37,10 +36,6 @@
     min-width:0;
     height:100vh;
     overflow-y:auto;
-    /* صفحه کلاً RTL هست، پس اسکرول‌بار طبیعتاً سمت چپ می‌افته (همون سمتی که
-       سایدبار بازمی‌شه). با LTR کردن خودِ این باکس، اسکرول‌بار همیشه سمت
-       راست (مخالفِ سایدبار) می‌شینه؛ محتوای داخلش رو با .content-rtl دوباره
-       RTL می‌کنیم که متن‌ها درست بمونن. */
     direction:ltr;
   }
   .content-rtl{
@@ -194,7 +189,6 @@
     .step{margin-bottom:56px;}
   }
 
-  /* ===== Sidebar (push panel, resizable) ===== */
   .sidebar{
     flex:0 0 auto;
     width:0;
@@ -207,11 +201,7 @@
     direction:rtl;
     transition:width .38s cubic-bezier(.22,.9,.3,1);
   }
-  /* در حالت باز، عرض دقیق رو جاوااسکریپت به‌صورت inline style تنظیم می‌کنه
-     (چه در باز شدن اولیه، چه موقع کشیدن دستگیره)، پس اینجا دیگه width:50%
-     ثابت نذاشتیم. */
 
-  /* ===== Resizer handle بین دو سکشن ===== */
   .resizer{
     flex:0 0 auto;
     width:0;
@@ -262,7 +252,6 @@
     height:100%;
     display:flex;
     flex-direction:column;
-    /* keeps content from reflowing/wrapping weirdly while the panel is animating its width */
     min-width:320px;
   }
 
@@ -384,10 +373,7 @@
 </div>
 
 <script>
-/* ============================================================
-   برای اضافه یا ویرایش پروژه‌ها فقط همین آرایه را تغییر بده.
-   tags همون جعبه‌های کوچیک قهوه‌ای بالای هر پروژه‌ان (اختیاری).
-============================================================ */
+
 const projects = [
   {
     title: "نام پروژهٔ اول",
@@ -411,9 +397,6 @@ const projects = [
   }
 ];
 
-/* ============================================================
-   از این پایین به بعد منطق ساخت صفحه است — نیازی به تغییر نیست
-============================================================ */
 const stepsEl = document.getElementById('steps');
 const roadmap = document.getElementById('roadmap');
 const mainPath = document.getElementById('mainPath');
@@ -446,7 +429,6 @@ function drawConnectors(){
   const wrapRect = roadmap.getBoundingClientRect();
   const hubs = Array.from(document.querySelectorAll('[data-hub]'));
 
-  // main elbowed line between consecutive hub boxes
   if(hubs.length > 1){
     const pts = hubs.map(h => {
       const r = h.getBoundingClientRect();
@@ -455,9 +437,6 @@ function drawConnectors(){
     let d = `M ${pts[0].x} ${pts[0].y}`;
     for(let i=0; i<pts.length-1; i++){
       const a = pts[i], b = pts[i+1];
-      // به‌جای رفتن تیز و صددرصد افقی از وسط، از دو نقطهٔ کنترل استفاده می‌کنیم
-      // که هرکدوم فقط تا نیمهٔ فاصلهٔ x (نه کل فاصله) جابه‌جا می‌شن؛ این باعث می‌شه
-      // خط بیشتر عمودی به‌نظر بیاد و فقط یه‌کم به چپ/راست منحرف بشه.
       const midY = (a.y + b.y) / 2;
       const cx1 = a.x + (b.x - a.x) * 0.15;
       const cx2 = b.x - (b.x - a.x) * 0.15;
@@ -501,14 +480,13 @@ const sbStatus = document.getElementById('sbStatus');
 const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
 
-const MIN_SIDEBAR = 300;   // کمترین عرض ممکن برای سایدبار (px)
-const MIN_MAIN = 320;      // کمترین فضایی که باید برای رودمپ بمونه (px)
-let sidebarWidthPx = null; // اندازهٔ فعلی سایدبار؛ null یعنی هنوز تنظیم نشده (اولین بازشدن پیش‌فرض ۵۰٪ می‌گیره)
+const MIN_SIDEBAR = 300;
+const MIN_MAIN = 320;
+let sidebarWidthPx = null;
 let isDragging = false;
 
 function isMobile(){ return window.innerWidth <= 640; }
 
-// عرض سایدبار رو با توجه به حداقل/حداکثر مجاز محدود می‌کنه و اعمالش می‌کنه
 function applySidebarWidth(px){
   const pageWidth = pageEl.getBoundingClientRect().width;
   const max = pageWidth - MIN_MAIN;
@@ -517,12 +495,9 @@ function applySidebarWidth(px){
   sidebar.style.width = clamped + 'px';
 }
 
-// چون سایدبار عرض محتوای اصلی رو تغییر می‌ده، بعد از پایان انیمیشن
-// باید موقعیت خط‌های اتصال دوباره محاسبه بشه
 sidebar.addEventListener('transitionend', (e) => {
   if(e.propertyName === 'width'){ drawConnectors(); }
 });
-// در حین انیمیشن هم چند بار به‌روزرسانی کن تا نرم‌تر دنبال کنه
 mainContent.addEventListener('transitionend', drawConnectors);
 
 function openProject(i){
@@ -540,8 +515,6 @@ function openProject(i){
   if(isMobile()){
     sidebar.style.width = '100%';
   } else {
-    // بار اول که سایدبار باز می‌شه، پیش‌فرض نصف صفحه؛ دفعات بعد همون
-    // اندازه‌ای که کاربر با کشیدن دستگیره انتخاب کرده حفظ می‌شه
     const defaultWidth = sidebarWidthPx ?? pageEl.getBoundingClientRect().width * 0.5;
     applySidebarWidth(defaultWidth);
     resizer.classList.add('open');
@@ -557,7 +530,6 @@ function closeSidebar(){
   sidebar.setAttribute('aria-hidden', 'true');
 }
 
-/* ===== کشیدن دستگیره برای تغییر اندازهٔ دو سکشن ===== */
 function startDrag(clientX){
   if(isMobile() || !sidebar.classList.contains('open')) return;
   isDragging = true;
@@ -569,8 +541,6 @@ function startDrag(clientX){
 function duringDrag(clientX){
   if(!isDragging) return;
   const pageRect = pageEl.getBoundingClientRect();
-  // چون صفحه RTL هست، سایدبار سمت چپِ .page قرار داره؛ پس عرض سایدبار
-  // برابره با فاصلهٔ ماوس تا لبهٔ چپِ .page
   const newWidth = clientX - pageRect.left;
   applySidebarWidth(newWidth);
   drawConnectors();
@@ -597,7 +567,6 @@ window.addEventListener('touchmove', (e) => {
 }, { passive:false });
 window.addEventListener('touchend', endDrag);
 
-// اگه پنجره بزرگ/کوچیک بشه و سایدبار بازه، دوباره داخل محدودهٔ مجاز جاش بده
 window.addEventListener('resize', () => {
   if(sidebar.classList.contains('open') && !isMobile() && sidebarWidthPx){
     applySidebarWidth(sidebarWidthPx);
