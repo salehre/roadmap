@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>roadmap</title>
+<title>Resome Roadmap</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='translate(2.2 3) scale(.82)'%3E%3Crect width='24' height='24' rx='3.3' fill='%23000000'/%3E%3Cpath fill='%23ffffff' d='M12.987 9.18q-.523.046-1.021.142q-.5.094-.95.214a3.6 3.6 0 0 1-.736.237v8.097a5.5 5.5 0 0 1-.76.143q-.498.07-1.045.07a6 6 0 0 1-.95-.07a1.6 1.6 0 0 1-.688-.285a1.5 1.5 0 0 1-.452-.57q-.142-.38-.142-.974V9.061q0-.546.19-.926q.213-.405.594-.713a4 4 0 0 1 .926-.546a9.1 9.1 0 0 1 2.54-.736a8 8 0 0 1 1.378-.119q1.14 0 1.804.451q.666.428.665 1.425q0 .333-.095.665a3 3 0 0 1-.237.57q-.512 0-1.021.047zm5.113 8.453q-.618.665-1.686.665c-1.068 0-1.274-.222-1.686-.665q-.618-.665-.617-1.662q0-.998.617-1.663q.618-.664 1.686-.664c1.068 0 1.274.221 1.686.664q.617.666.617 1.663t-.617 1.662'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='3.3' fill='%23000000'/%3E%3Cpath fill='%23ffffff' d='M12.987 9.18q-.523.046-1.021.142q-.5.094-.95.214a3.6 3.6 0 0 0-.736.237v8.097a5.5 5.5 0 0 1-.76.143q-.498.07-1.045.07a6 6 0 0 1-.95-.07a1.6 1.6 0 0 1-.688-.285a1.5 1.5 0 0 1-.452-.57q-.142-.38-.142-.974V9.061q0-.546.19-.926q.213-.405.594-.713a4 4 0 0 1 .926-.546a9.1 9.1 0 0 1 2.54-.736a8 8 0 0 1 1.378-.119q1.14 0 1.804.451q.666.428.665 1.425q0 .333-.095.665a3 3 0 0 1-.237.57q-.512 0-1.021.047zm5.113 8.453q-.618.665-1.686.665c-1.068 0-1.274-.222-1.686-.665q-.618-.665-.617-1.662q0-.998.617-1.663q.618-.664 1.686-.664c1.068 0 1.274.221 1.686.664q.617.666.617 1.663t-.617 1.662'/%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -251,23 +252,14 @@
     border-bottom:2px solid #f0f0f0;
     flex:0 0 auto;
   }
-  .sidebar-header .kicker{
-    display:inline-block;
-    font-size:11px;
-    font-weight:700;
-    color:#fff;
-    background:var(--blue);
-    padding:3px 10px;
-    border-radius:4px;
-    margin-bottom:8px;
-  }
+
   .sidebar-header h2{
     margin:0;
     font-size:21px;
     font-weight:800;
     line-height:1.4;
   }
-  .sidebar-header .kicker{margin:8px 0 0;}
+  .sidebar-header .status-pill{margin:8px 0 0;}
   .sidebar-close{
     all:unset;
     cursor:pointer;
@@ -302,6 +294,8 @@
   .sidebar-body p{margin:0 0 16px;}
   .tools-section{
     display:flex; flex-wrap:wrap; gap:8px;
+    margin-top:20px;
+    padding-top:20px;
     padding-bottom:20px;
   }
   .section-title{
@@ -316,8 +310,7 @@
     gap:8px;
   }
   .details-section{
-    padding-top:20px;
-    border-top:2px solid #f0f0f0;
+    padding-top:0;
   }
   .project-link{
     display:inline-block;
@@ -446,21 +439,20 @@
       <div class="sidebar-header">
         <div class="meta">
           <h2 id="sbTitle">—</h2>
-          <span class="kicker" id="sbKicker">پروژه</span>
+          <span class="status-pill" id="sbStatus"></span>
         </div>
         <button class="sidebar-close" id="sbClose" aria-label="بستن">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="sidebar-body">
-        <section class="tools-section" id="sbToolsSection" hidden>
-          <h3 class="section-title">ابزارها</h3>
-          <div class="tags" id="sbTags"></div>
-        </section>
         <section class="details-section">
-          <span class="status-pill" id="sbStatus"></span>
           <div id="sbDescription"></div>
           <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden>مشاهده پروژه</a>
+          <div class="tools-section" id="sbToolsSection" hidden>
+            <h3 class="section-title">ابزارها</h3>
+            <div class="tags" id="sbTags"></div>
+          </div>
         </section>
         <section class="project-gallery" id="sbGallery" hidden>
           <h3 class="gallery-title">تصاویر پروژه</h3>
@@ -489,6 +481,7 @@ const projects = [
     title: "نام پروژهٔ دوم",
     status: "در حال ساخت",
     description: "توضیح این پروژه رو اینجا بنویس.",
+    tags: ["HTML", "CSS", "JavaScript"],
     images: [
         "public/images/1.jpg",
         "public/images/2.jpg",
@@ -520,14 +513,10 @@ const pathTurnRatios = [0.33, 0.61, 0.42];
 projects.forEach((p, i) => {
   const side = i % 2 === 0 ? 'side-right' : 'side-left';
   const num = String(i + 1).padStart(2, '0');
-  const tagsHtml = (p.tags && p.tags.length)
-    ? `<div class="tags-col">${p.tags.map(t => `<div class="box tag-box">${t}</div>`).join('')}</div>`
-    : '';
   const step = document.createElement('div');
   step.className = `step ${side}`;
   step.innerHTML = `
     <div class="stack">
-      ${tagsHtml}
       <div>
         <button class="hub-btn" data-index="${i}">
           <div class="box hub-box" data-hub="${i}">${p.title}</div>
@@ -564,23 +553,6 @@ function drawConnectors(){
     mainPath.setAttribute('d', d);
   }
 
-  // dotted connectors from each tag box down to its hub box
-  document.querySelectorAll('.tag-connector').forEach(el => el.remove());
-  document.querySelectorAll('.stack').forEach(stack => {
-    const hub = stack.querySelector('[data-hub]');
-    if(!hub) return;
-    const hubR = hub.getBoundingClientRect();
-    const hubTop = { x: hubR.left + hubR.width/2 - wrapRect.left, y: hubR.top - wrapRect.top };
-    stack.querySelectorAll('.tag-box').forEach(tag => {
-      const tR = tag.getBoundingClientRect();
-      const from = { x: tR.left + tR.width/2 - wrapRect.left, y: tR.bottom - wrapRect.top };
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('class', 'tag-connector');
-      path.setAttribute('d', `M ${from.x} ${from.y} L ${hubTop.x} ${hubTop.y}`);
-      connSvg.appendChild(path);
-    });
-  });
-
   connSvg.setAttribute('viewBox', `0 0 ${wrapRect.width} ${wrapRect.height}`);
   connSvg.setAttribute('preserveAspectRatio', 'none');
 }
@@ -594,7 +566,6 @@ const sidebar = document.getElementById('sidebar');
 const resizer = document.getElementById('resizer');
 const pageEl = document.querySelector('.page');
 const sbTitle = document.getElementById('sbTitle');
-const sbKicker = document.getElementById('sbKicker');
 const sbStatus = document.getElementById('sbStatus');
 const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
@@ -628,7 +599,6 @@ mainContent.addEventListener('transitionend', drawConnectors);
 
 function openProject(i){
   const p = projects[i];
-  sbKicker.textContent = `پروژهٔ ${String(i+1).padStart(2,'0')}`;
   sbTitle.textContent = p.title;
   sbStatus.textContent = p.status;
   sbDescription.innerHTML = p.description.split('\n').map(line => `<p>${line}</p>`).join('');
