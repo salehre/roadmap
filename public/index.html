@@ -135,21 +135,20 @@
   .secondary-projects-toggle svg{width:22px; height:22px;}
   .secondary-projects-dropdown{
     position:absolute;
-    top:52px;
+    bottom:42px;
     right:0;
-    width:220px;
+    width:210px;
     padding:8px;
     background:#fff;
     border:2px solid var(--line);
     border-radius:var(--radius);
-    box-shadow:4px 4px 0 rgba(0,0,0,.12);
   }
   .secondary-projects-dropdown[hidden]{display:none;}
   .secondary-project-item{
     all:unset;
     display:block;
-    width:100%;
-    padding:10px 12px;
+    width:180px;
+    padding:10px 10px 10px 0px;
     cursor:pointer;
     border-radius:var(--radius);
     font-size:14px;
@@ -157,11 +156,10 @@
     text-align:right;
   }
   .secondary-project-item:hover,
-  .secondary-project-item:focus-visible{background:var(--yellow);}
-  .secondary-project-item:focus-visible{outline:2px solid var(--line); outline-offset:-2px;}
+  .secondary-project-item:focus-visible{background:#e2e2e2;}
 
   @media (max-width: 640px){
-    .secondary-projects{top:14px; right:14px;}
+    .secondary-projects{bottom:14px; right:14px;}
   }
 
   /* ===== Roadmap ===== */
