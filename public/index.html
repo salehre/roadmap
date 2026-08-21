@@ -440,11 +440,16 @@
   .details-section{
     padding-top:0;
   }
+  .project-links{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:8px;
+  }
   .project-link{
     display:table;
     width:fit-content;
     max-width:calc(100% - 10px);
-    margin-top:8px;
     margin-right:auto;
     padding:12px 16px;
     overflow:hidden;
@@ -463,6 +468,23 @@
   .project-link:hover{background:#111827;}
   .project-link:focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
   .project-link[hidden]{display:none;}
+  .project-github{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+    border:2px solid var(--line);
+    border-radius:4px;
+    background:#1f2937;
+    color:#fff;
+    transition:background .2s ease, transform .18s ease;
+  }
+  .project-github:hover{background:#111827; transform:translateY(-1px);}
+  .project-github:focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
+  .project-github[hidden]{display:none;}
+  .project-github svg{width:21px; height:21px;}
   .tag-chip{
     font-size:12px;
     font-weight:500;
@@ -581,10 +603,8 @@
             </svg>
           </a>
           <a class="social-link" href="#" target="_blank" rel="noopener" aria-label="جیمیل" title="جیمیل">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 6.5 12 13l9-6.5"/>
-              <path d="M3 6.5V19h18V6.5"/>
-              <path d="m3 7 9 6.5L21 7"/>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/>
             </svg>
           </a>
         </div>
@@ -631,7 +651,14 @@
       <div class="sidebar-body">
         <section class="details-section">
           <div id="sbDescription"></div>
-          <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden></a>
+          <div class="project-links">
+            <a id="sbGithub" class="project-github" href="#" target="_blank" rel="noopener" aria-label="مخزن گیت‌هاب پروژه" title="مخزن گیت‌هاب پروژه">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.53 2.87 8.37 6.84 9.72.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.23-3.37-1.23-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1.01.08 1.54 1.07 1.54 1.07.9 1.58 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.2 9.2 0 0 1 12 7.13c.85 0 1.71.12 2.51.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.95.68 1.92v2.84c0 .27.18.59.69.49A10.26 10.26 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z"/>
+              </svg>
+            </a>
+            <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden></a>
+          </div>
         </section>
         <section class="project-gallery" id="sbGallery" hidden>
           <h3 class="gallery-title">تصاویر پروژه</h3>
@@ -666,7 +693,8 @@ const projects = [
       "images/2.jpg",
       "images/3.jpg",
     ],
-    link: "https://example.com/project2"
+    link: "https://example.com/project2",
+    github: "https://github.com/example/project2"
   },
   {
     title: "نام پروژهٔ سوم",
@@ -775,6 +803,7 @@ const sbDescription = document.getElementById('sbDescription');
 const sbTags = document.getElementById('sbTags');
 const sbToolsSection = document.getElementById('sbToolsSection');
 const sbLink = document.getElementById('sbLink');
+const sbGithub = document.getElementById('sbGithub');
 const sbGallery = document.getElementById('sbGallery');
 const sbGalleryGrid = document.getElementById('sbGalleryGrid');
 const lightbox = document.getElementById('lightbox');
@@ -811,6 +840,7 @@ function openProject(i){
   sbLink.hidden = !p.link;
   sbLink.href = p.link || '#';
   sbLink.textContent = p.link || '';
+  sbGithub.href = p.github || '#';
   const images = (p.images || []).slice(0, 4);
   sbGalleryGrid.className = `gallery-grid images-${images.length}`;
   sbGalleryGrid.innerHTML = images.map((src, imageIndex) => `
