@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resome Roadmap</title>
+<link rel="canonical" href="https://example.com/en.html" />
+<link rel="alternate" hreflang="fa" href="https://example.com/fa.html" />
+<link rel="alternate" hreflang="en" href="https://example.com/en.html" />
+<link rel="alternate" hreflang="x-default" href="https://example.com/en.html" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='translate(2.2 3) scale(.82)'%3E%3Crect width='24' height='24' rx='3.3' fill='%23000000'/%3E%3Cpath fill='%23ffffff' d='M12.987 9.18q-.523.046-1.021.142q-.5.094-.95.214a3.6 3.6 0 0 1-.736.237v8.097a5.5 5.5 0 0 1-.76.143q-.498.07-1.045.07a6 6 0 0 1-.95-.07a1.6 1.6 0 0 1-.688-.285a1.5 1.5 0 0 1-.452-.57q-.142-.38-.142-.974V9.061q0-.546.19-.926q.213-.405.594-.713a4 4 0 0 1 .926-.546a9.1 9.1 0 0 1 2.54-.736a8 8 0 0 1 1.378-.119q1.14 0 1.804.451q.666.428.665 1.425q0 .333-.095.665a3 3 0 0 1-.237.57q-.512 0-1.021.047zm5.113 8.453q-.618.665-1.686.665c-1.068 0-1.274-.222-1.686-.665q-.618-.665-.617-1.662q0-.998.617-1.663q.618-.664 1.686-.664c1.068 0 1.274.221 1.686.664q.617.666.617 1.663t-.617 1.662'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='3.3' fill='%23000000'/%3E%3Cpath fill='%23ffffff' d='M12.987 9.18q-.523.046-1.021.142q-.5.094-.95.214a3.6 3.6 0 0 0-.736.237v8.097a5.5 5.5 0 0 1-.76.143q-.498.07-1.045.07a6 6 0 0 1-.95-.07a1.6 1.6 0 0 1-.688-.285a1.5 1.5 0 0 1-.452-.57q-.142-.38-.142-.974V9.061q0-.546.19-.926q.213-.405.594-.713a4 4 0 0 1 .926-.546a9.1 9.1 0 0 1 2.54-.736a8 8 0 0 1 1.378-.119q1.14 0 1.804.451q.666.428.665 1.425q0 .333-.095.665a3 3 0 0 1-.237.57q-.512 0-1.021.047zm5.113 8.453q-.618.665-1.686.665c-1.068 0-1.274-.222-1.686-.665q-.618-.665-.617-1.662q0-.998.617-1.663q.618-.664 1.686-.664c1.068 0 1.274.221 1.686.664q.617.666.617 1.663t-.617 1.662'/%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,9 +43,31 @@
     overflow-y:auto;
     direction:ltr;
   }
-  .content-rtl{
-    direction:rtl;
+  .content-ltr{
+    direction:ltr;
   }
+
+  /* ===== Lang switch ===== */
+  .lang-switch{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:10;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:2px solid var(--line);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--ink);
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    box-shadow:0 2px 0 rgba(0,0,0,.08);
+    transition:background .2s ease;
+  }
+  .lang-switch:hover{background:#f1f1f1;}
 
   /* ===== Header ===== */
   .hero{
@@ -176,6 +202,7 @@
     .roadmap{padding:20px 10px;}
     .step{margin-bottom:64px;}
     .connector-line{stroke-width:3.5;}
+    .lang-switch{top:10px; right:10px; padding:6px 10px; font-size:12px;}
   }
 
   .sidebar{
@@ -187,7 +214,7 @@
     color:#141414;
     display:flex;
     flex-direction:column;
-    direction:rtl;
+    direction:ltr;
     transition:width .38s cubic-bezier(.22,.9,.3,1);
   }
 
@@ -442,13 +469,15 @@
 </head>
 <body>
 
+<a href="fa.html" class="lang-switch" hreflang="fa" lang="fa">فا</a>
+
 <div class="page">
   <main class="main-content" id="mainContent">
-    <div class="content-rtl">
+    <div class="content-ltr">
       <div class="hero">
-        <div class="eyebrow">نقشهٔ راه</div>
-        <h1>رودمپ پروژه‌ها</h1>
-        <p>مسیری از پروژه‌هایی که ساخته شده یا در حال ساخت هستند.</p>
+        <div class="eyebrow">Roadmap</div>
+        <h1>Project Roadmap</h1>
+        <p>A path through the projects that have been built or are in progress.</p>
       </div>
 
       <div class="roadmap" id="roadmap">
@@ -475,7 +504,7 @@
           </div>
         </div>
         <div class="header-actions">
-          <button class="sidebar-close" id="sbClose" aria-label="بستن">
+          <button class="sidebar-close" id="sbClose" aria-label="Close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
           <section class="tools-section" id="sbToolsSection" hidden>
@@ -489,7 +518,7 @@
           <a id="sbLink" class="project-link" href="#" target="_blank" rel="noopener" hidden></a>
         </section>
         <section class="project-gallery" id="sbGallery" hidden>
-          <h3 class="gallery-title">تصاویر پروژه</h3>
+          <h3 class="gallery-title">Project images</h3>
           <div class="gallery-grid" id="sbGalleryGrid"></div>
         </section>
       </div>
@@ -497,8 +526,8 @@
   </aside>
 </div>
 
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="نمایش تصویر" hidden>
-  <button class="lightbox-close" id="lightboxClose" aria-label="بستن تصویر">&times;</button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
   <img class="lightbox-image" id="lightboxImage" alt="">
 </div>
 
@@ -506,15 +535,15 @@
 
 const projects = [
   {
-    title: "نام پروژهٔ اول",
-    status: "تکمیل‌شده",
-    description: "یک یا دو پاراگراف دربارهٔ این پروژه بنویس؛ چه مشکلی رو حل می‌کنه و چه تکنولوژی‌هایی توش استفاده شده.",
+    title: "First Project Name",
+    status: "Completed",
+    description: "Write one or two paragraphs about this project; what problem it solves and what technologies were used.",
     images: [],
   },
   {
-    title: "نام پروژهٔ دوم",
-    status: "در حال ساخت",
-    description: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+    title: "Second Project Name",
+    status: "In Progress",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     tags: ["HTML", "CSS", "JavaScript"],
     images: [
       "images/1.jpg",
@@ -524,15 +553,15 @@ const projects = [
     link: "https://example.com/project2"
   },
   {
-    title: "نام پروژهٔ سوم",
-    status: "برنامه‌ریزی‌شده",
-    description: "توضیح این پروژه رو اینجا بنویس.",
+    title: "Third Project Name",
+    status: "Planned",
+    description: "Write the description of this project here.",
     images: [],
   },
   {
-    title: "نام پروژهٔ چهارم",
-    status: "تکمیل‌شده",
-    description: "توضیح این پروژه رو اینجا بنویس.",
+    title: "Fourth Project Name",
+    status: "Completed",
+    description: "Write the description of this project here.",
     images: [],
   }
 ];
@@ -645,8 +674,8 @@ function openProject(i){
   const images = (p.images || []).slice(0, 4);
   sbGalleryGrid.className = `gallery-grid images-${images.length}`;
   sbGalleryGrid.innerHTML = images.map((src, imageIndex) => `
-    <button class="gallery-thumb" type="button" data-gallery-index="${imageIndex}" aria-label="نمایش تصویر ${imageIndex + 1}">
-      <img src="${src}" alt="${p.title} - تصویر ${imageIndex + 1}" loading="lazy">
+    <button class="gallery-thumb" type="button" data-gallery-index="${imageIndex}" aria-label="View image ${imageIndex + 1}">
+      <img src="${src}" alt="${p.title} - image ${imageIndex + 1}" loading="lazy">
     </button>
   `).join('');
   sbGallery.hidden = images.length === 0;
