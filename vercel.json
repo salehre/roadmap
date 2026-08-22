@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/en.html" }
+    { "source": "/", "destination": "/en" }
   ]
 }
